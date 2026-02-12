@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello Juicy Lucy</title>
     <style>
-        /* Import a nature-themed font */
-        @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
+        /* Import fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Caveat:wght@400;600&display=swap');
 
         body, html {
             margin: 0;
@@ -14,7 +14,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: linear-gradient(to bottom, #1a2a1a, #2d5a27);
+            background: linear-gradient(to bottom, #87CEEB, #98d998, #5cb85c);
             font-family: 'Amatic SC', cursive;
         }
 
@@ -26,17 +26,22 @@
             transform: translate(-50%, -50%);
             z-index: 10;
             text-align: center;
-            pointer-events: none; /* Let clicks pass through to the leaves */
+            transition: opacity 0.8s ease, transform 1.5s ease;
+        }
+
+        .container.hidden {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            pointer-events: none;
         }
 
         /* The Main Text Styling */
         h1 {
             font-size: 6rem;
-            color: #dfffdf;
+            color: #2e5a2e;
             text-shadow: 
-                0 0 10px #4caf50,
-                0 0 20px #4caf50,
-                0 0 40px #1b5e20;
+                2px 2px 0px rgba(255,255,255,0.4),
+                -1px -1px 0px rgba(0,0,0,0.2);
             margin: 0;
             opacity: 0;
             animation: growIn 2s ease-out forwards, float 3s ease-in-out infinite;
@@ -44,19 +49,20 @@
 
         .subtitle {
             font-size: 2rem;
-            color: #a5d6a7;
+            color: #4a7c4a;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
             margin-top: -10px;
             opacity: 0;
             animation: fadeIn 2s ease-out 1s forwards;
         }
 
-        /* Wood plank effect behind text (Optional styling) */
+        /* Wood plank effect behind text */
         .wood-plank {
-            background: #5d4037;
+            background: linear-gradient(135deg, #d4a574 0%, #c4956a 50%, #b8885d 100%);
             padding: 20px 60px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 4px solid #3e2723;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.3);
+            border: 4px solid #a67c52;
             display: inline-block;
             position: relative;
         }
@@ -67,12 +73,337 @@
             position: absolute;
             width: 20px;
             height: 20px;
-            background: #66bb6a;
+            background: #4a7c4a;
             border-radius: 50% 0 50% 0;
             top: -10px;
         }
         .wood-plank::before { left: 20px; transform: rotate(-45deg); }
         .wood-plank::after { right: 20px; transform: rotate(45deg); }
+
+        /* Enter Button */
+        .enter-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-family: 'Amatic SC', cursive;
+            font-size: 2rem;
+            color: #fff;
+            background: linear-gradient(135deg, #4a7c4a 0%, #2e5a2e 100%);
+            border: 3px solid #1e3a1e;
+            border-radius: 30px;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            animation: fadeIn 2s ease-out 1.5s forwards;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #5a8c5a 0%, #3e6a3e 100%);
+        }
+
+        .enter-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Letter container */
+        .letter-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        .letter-container.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .letter {
+            background: linear-gradient(135deg, #fdf8e8 0%, #f5edd6 50%, #ebe3c9 100%);
+            padding: 40px 50px;
+            border-radius: 5px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4), inset 0 0 30px rgba(139,90,43,0.1);
+            max-width: 600px;
+            position: relative;
+            transform: rotate(-1deg);
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 27px,
+                #e0d5c0 28px
+            );
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .letter-header {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: #5a4a3a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .letter-body {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            color: #4a3a2a;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .letter-signature {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: #5a4a3a;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .valentine-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            position: relative;
+            z-index: 5;
+            min-height: 60px;
+        }
+
+        .valentine-btn {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            padding: 12px 40px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #e85a71 0%, #d64161 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(232, 90, 113, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(232, 90, 113, 0.6);
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: absolute;
+            left: calc(50% + 60px);
+            top: 0;
+            transition: none;
+        }
+
+        /* Celebration overlay */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .celebration.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .celebration-text {
+            font-family: 'Amatic SC', cursive;
+            font-size: 6rem;
+            color: #fff;
+            text-shadow: 0 0 20px #e85a71, 0 0 40px #e85a71;
+            text-align: center;
+            animation: celebratePulse 1s ease-in-out infinite;
+        }
+
+        @keyframes celebratePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Puzzle Game */
+        .puzzle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            backdrop-filter: blur(3px);
+        }
+
+        .puzzle-container.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .puzzle-title {
+            font-family: 'Amatic SC', cursive;
+            font-size: 3rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(232, 90, 113, 0.5);
+            background: rgba(0,0,0,0.3);
+            padding: 10px 30px;
+            border-radius: 10px;
+        }
+
+        .puzzle-area {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .puzzle-slot {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .puzzle-slot.drag-over {
+            background: rgba(232, 90, 113, 0.2);
+            border-color: #e85a71;
+        }
+
+        .puzzle-slot.filled {
+            border: none;
+            background: transparent;
+        }
+
+        .pieces-tray {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 280px;
+            padding: 20px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            justify-content: center;
+            min-height: 400px;
+            align-content: flex-start;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .puzzle-piece {
+            width: 120px;
+            height: 120px;
+            background-size: 360px 360px;
+            border-radius: 5px;
+            cursor: grab;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .puzzle-piece.dragging {
+            opacity: 0.7;
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+
+        .puzzle-piece.placed {
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .puzzle-hint {
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            color: #fff;
+            margin-top: 20px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.3);
+            padding: 8px 20px;
+            border-radius: 8px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+
+        .letter-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #8a7a6a;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 2;
+        }
+
+        .letter-close:hover {
+            color: #4a3a2a;
+        }
 
         /* Animations */
         @keyframes growIn {
@@ -98,15 +429,64 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #forestCanvas.zooming {
+            transform: scale(3) translateY(10%);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="welcomeContainer">
         <div class="wood-plank">
             <h1>Hello Juicy Lucy</h1>
             <div class="subtitle">Welcome to the Forest</div>
+        </div>
+        <button class="enter-btn" id="enterBtn">🌲 Enter the Forest 🌲</button>
+    </div>
+
+    <div class="letter-container" id="letterContainer">
+        <div class="letter">
+            <span class="letter-close" id="letterClose">×</span>
+            <div class="letter-header">✨ Dear Juicy Lucy ✨</div>
+            <div class="letter-body">
+                It's your boy little B. I am so happy to be your boyfriend!
+                <br><br>
+                This is our first valentine's day together, and I figured this is my most authentic way to make a gesture while apart.
+                <br><br>
+                I am so grateful for your trust in me by being vulnerable with me, even though it can be scary.
+                You are kind, smart, beautiful, and so goofy and fun! 
+                <br><br> 
+                I can't wait for you to come to SF, show you around, and explore the city with you.
+
+            </div>
+            <div class="letter-signature">Now, I have to ask, will you be my valentine? 💚</div>
+            <div class="valentine-buttons">
+                <button class="valentine-btn yes-btn" id="yesBtn">Yes! 💕</button>
+                <button class="valentine-btn no-btn" id="noBtn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="puzzle-container" id="puzzleContainer">
+        <div class="puzzle-title">🧩 Complete the puzzle to accept! 🧩</div>
+        <div class="puzzle-area">
+            <div class="puzzle-board" id="puzzleBoard">
+                <!-- 9 slots will be generated -->
+            </div>
+            <div class="pieces-tray" id="piecesTray">
+                <!-- Puzzle pieces will be generated -->
+            </div>
+        </div>
+        <div class="puzzle-hint">Drag each piece to its correct spot to be my valentine! 💕</div>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <div class="celebration-text">
+            🎉 Yay! 🎉<br>
+            Happy Valentine's Day! 💕
         </div>
     </div>
 
@@ -118,11 +498,111 @@
 
         let width, height;
         let leaves = [];
+        let trees = [];
+        let mountains = [];
+        let sceneMountains = [];
         
-        // Resize canvas to fill window
+        // Scene state
+        let currentScene = 'forest'; // 'forest', 'transitioning', 'lake'
+        let transitionProgress = 0;
+        let sunY = 0;
+        let sunTargetY = 0;
+        let lakeWaveOffset = 0;
+        
+        // Generate mountain data for forest scene
+        function generateMountains() {
+            mountains = [];
+            const numBackMountains = Math.floor(width / 200) + 2;
+            for (let i = 0; i < numBackMountains; i++) {
+                mountains.push({
+                    x: i * 200 - 50 + Math.random() * 100,
+                    peakHeight: height * 0.35 + Math.random() * 80,
+                    width: 300 + Math.random() * 150,
+                    color: '#7a9d7a',
+                    layer: 0
+                });
+            }
+            const numFrontMountains = Math.floor(width / 250) + 2;
+            for (let i = 0; i < numFrontMountains; i++) {
+                mountains.push({
+                    x: i * 250 - 100 + Math.random() * 150,
+                    peakHeight: height * 0.28 + Math.random() * 60,
+                    width: 350 + Math.random() * 100,
+                    color: '#5a7d5a',
+                    layer: 1
+                });
+            }
+        }
+        
+        // Generate mountain data for lake scene
+        function generateSceneMountains() {
+            sceneMountains = [];
+            // Majestic back mountains with snow caps
+            sceneMountains.push({
+                x: width * 0.2,
+                peakHeight: height * 0.55,
+                width: width * 0.4,
+                baseColor: '#6b8e7b',
+                snowColor: '#f0f5f0',
+                hasSnow: true
+            });
+            sceneMountains.push({
+                x: width * 0.5,
+                peakHeight: height * 0.65,
+                width: width * 0.5,
+                baseColor: '#5a7d6a',
+                snowColor: '#ffffff',
+                hasSnow: true
+            });
+            sceneMountains.push({
+                x: width * 0.8,
+                peakHeight: height * 0.5,
+                width: width * 0.45,
+                baseColor: '#7a9d8a',
+                snowColor: '#e8f0e8',
+                hasSnow: true
+            });
+            // Foreground hills
+            sceneMountains.push({
+                x: width * 0.15,
+                peakHeight: height * 0.25,
+                width: width * 0.35,
+                baseColor: '#4a6b5a',
+                hasSnow: false
+            });
+            sceneMountains.push({
+                x: width * 0.85,
+                peakHeight: height * 0.22,
+                width: width * 0.3,
+                baseColor: '#3d5e4d',
+                hasSnow: false
+            });
+        }
+        
+        // Generate tree data
+        function generateTrees() {
+            trees = [];
+            const numberOfTrees = Math.floor(width / 150) + 1;
+            for (let i = 0; i < numberOfTrees; i++) {
+                trees.push({
+                    x: i * 150 + 25,
+                    height: height * 0.4 + Math.random() * 100,
+                    width: 80 + Math.random() * 40
+                });
+            }
+        }
+        
+        // Resize canvas
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
+            generateMountains();
+            generateTrees();
+            generateSceneMountains();
+            sunTargetY = height * 0.15;
+            if (currentScene === 'forest') {
+                sunY = -100;
+            }
         }
         window.addEventListener('resize', resize);
         resize();
@@ -130,24 +610,26 @@
         // Leaf Class
         class Leaf {
             constructor() {
+                this.reset();
+            }
+            
+            reset() {
                 this.x = Math.random() * width;
-                this.y = Math.random() * -height; // Start above screen
+                this.y = Math.random() * -height;
                 this.size = Math.random() * 15 + 10;
                 this.speedY = Math.random() * 2 + 1;
                 this.speedX = Math.random() * 2 - 1;
                 this.angle = Math.random() * 360;
                 this.spin = Math.random() * 4 - 2;
-                // Random shades of green and autumn colors
                 const colors = ['#66bb6a', '#43a047', '#a5d6a7', '#ffeb3b', '#ff9800'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
             }
 
             update() {
                 this.y += this.speedY;
-                this.x += Math.sin(this.y / 50) + this.speedX; // Wavy motion
+                this.x += Math.sin(this.y / 50) + this.speedX;
                 this.angle += this.spin;
 
-                // Reset if it goes off screen
                 if (this.y > height + 50) {
                     this.y = -50;
                     this.x = Math.random() * width;
@@ -159,8 +641,6 @@
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.angle * Math.PI / 180);
                 ctx.fillStyle = this.color;
-                
-                // Draw a simple leaf shape
                 ctx.beginPath();
                 ctx.moveTo(0, -this.size/2);
                 ctx.bezierCurveTo(this.size/2, -this.size/2, this.size/2, this.size/2, 0, this.size/2);
@@ -170,16 +650,499 @@
             }
         }
 
-        // Tree (Background silhouettes)
+        // Draw forest mountains
+        function drawMountains() {
+            const sortedMountains = [...mountains].sort((a, b) => a.layer - b.layer);
+            for (let mountain of sortedMountains) {
+                ctx.fillStyle = mountain.color;
+                ctx.beginPath();
+                ctx.moveTo(mountain.x - mountain.width / 2, height);
+                ctx.lineTo(mountain.x, height - mountain.peakHeight);
+                ctx.lineTo(mountain.x + mountain.width / 2, height);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        // Draw trees
         function drawTrees() {
-            // We just draw these once or on resize, but for this demo 
-            // we will draw them in the loop to keep it simple, 
-            // though normally you'd cache this for performance.
+            ctx.fillStyle = '#2d4a2d';
+            for (let tree of trees) {
+                ctx.fillRect(tree.x - 10, height - tree.height * 0.3, 20, tree.height * 0.3);
+                ctx.beginPath();
+                ctx.moveTo(tree.x, height - tree.height);
+                ctx.lineTo(tree.x + tree.width / 2, height - tree.height * 0.3);
+                ctx.lineTo(tree.x - tree.width / 2, height - tree.height * 0.3);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        // Draw sun with glow
+        function drawSun(x, y, radius) {
+            // Outer glow
+            const gradient = ctx.createRadialGradient(x, y, radius * 0.5, x, y, radius * 3);
+            gradient.addColorStop(0, 'rgba(255, 244, 180, 0.8)');
+            gradient.addColorStop(0.3, 'rgba(255, 220, 100, 0.3)');
+            gradient.addColorStop(1, 'rgba(255, 200, 50, 0)');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(x, y, radius * 3, 0, Math.PI * 2);
+            ctx.fill();
             
-            const numberOfTrees = Math.floor(width / 150);
+            // Sun body
+            const sunGradient = ctx.createRadialGradient(x - radius * 0.3, y - radius * 0.3, 0, x, y, radius);
+            sunGradient.addColorStop(0, '#fff9e6');
+            sunGradient.addColorStop(0.5, '#ffdd66');
+            sunGradient.addColorStop(1, '#ffaa00');
+            ctx.fillStyle = sunGradient;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Draw lake scene mountains
+        function drawSceneMountains() {
+            // Sort by peak height (taller = further back)
+            const sorted = [...sceneMountains].sort((a, b) => b.peakHeight - a.peakHeight);
             
-            ctx.fillStyle = '#0e1d0e'; // Very dark green/black
+            for (let m of sorted) {
+                const baseY = height * 0.55; // Lake line
+                
+                // Mountain body
+                ctx.fillStyle = m.baseColor;
+                ctx.beginPath();
+                ctx.moveTo(m.x - m.width / 2, baseY);
+                ctx.lineTo(m.x, baseY - m.peakHeight);
+                ctx.lineTo(m.x + m.width / 2, baseY);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Snow cap
+                if (m.hasSnow) {
+                    ctx.fillStyle = m.snowColor;
+                    ctx.beginPath();
+                    const snowHeight = m.peakHeight * 0.25;
+                    const snowWidth = m.width * 0.3;
+                    ctx.moveTo(m.x - snowWidth / 2, baseY - m.peakHeight + snowHeight);
+                    ctx.lineTo(m.x, baseY - m.peakHeight);
+                    ctx.lineTo(m.x + snowWidth / 2, baseY - m.peakHeight + snowHeight);
+                    // Jagged snow line
+                    const segments = 5;
+                    for (let i = segments; i >= 0; i--) {
+                        const px = m.x - snowWidth / 2 + (snowWidth / segments) * i;
+                        const py = baseY - m.peakHeight + snowHeight + Math.sin(i * 2) * 8;
+                        ctx.lineTo(px, py);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            }
+        }
+
+        // Draw lake with reflections
+        function drawLake() {
+            const lakeY = height * 0.55;
             
-            for (let i = 0; i < numberOfTrees + 1; i++) {
-                let treeX = i * 150 + (Math.random() * 50);
-                let treeHeight = height * 0.4
+            // Lake base
+            const lakeGradient = ctx.createLinearGradient(0, lakeY, 0, height);
+            lakeGradient.addColorStop(0, '#5a9ab8');
+            lakeGradient.addColorStop(0.3, '#4a8aa8');
+            lakeGradient.addColorStop(1, '#3a7a98');
+            ctx.fillStyle = lakeGradient;
+            ctx.fillRect(0, lakeY, width, height - lakeY);
+            
+            // Mountain reflections (simplified, wavy)
+            ctx.save();
+            ctx.globalAlpha = 0.3;
+            ctx.translate(0, lakeY * 2);
+            ctx.scale(1, -0.5);
+            drawSceneMountains();
+            ctx.restore();
+            
+            // Sun reflection
+            ctx.save();
+            ctx.globalAlpha = 0.4;
+            const sunReflectY = lakeY + (lakeY - sunY) * 0.3;
+            for (let i = 0; i < 20; i++) {
+                const waveX = width * 0.7 + Math.sin(lakeWaveOffset + i * 0.5) * 15;
+                const waveY = sunReflectY + i * 8;
+                const waveWidth = 60 - i * 2;
+                ctx.fillStyle = `rgba(255, 220, 100, ${0.5 - i * 0.02})`;
+                ctx.beginPath();
+                ctx.ellipse(waveX, waveY, waveWidth, 3, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+            
+            // Water ripples
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 8; i++) {
+                const rippleY = lakeY + 30 + i * 40;
+                ctx.beginPath();
+                ctx.moveTo(0, rippleY);
+                for (let x = 0; x < width; x += 20) {
+                    const y = rippleY + Math.sin((x + lakeWaveOffset * 50) / 80) * 3;
+                    ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+            
+            // Shoreline
+            ctx.fillStyle = '#5a7d5a';
+            ctx.beginPath();
+            ctx.moveTo(0, lakeY);
+            for (let x = 0; x <= width; x += 50) {
+                const y = lakeY + Math.sin(x / 100) * 5 - 5;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, lakeY + 20);
+            ctx.lineTo(0, lakeY + 20);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // Draw lake scene sky
+        function drawLakeSky() {
+            const gradient = ctx.createLinearGradient(0, 0, 0, height * 0.55);
+            gradient.addColorStop(0, '#4a90c2');
+            gradient.addColorStop(0.4, '#7bb8d8');
+            gradient.addColorStop(0.7, '#a8d4e8');
+            gradient.addColorStop(1, '#d4eaf5');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height * 0.55);
+        }
+
+        // Draw some birds
+        function drawBirds() {
+            ctx.strokeStyle = '#2a4a5a';
+            ctx.lineWidth = 2;
+            const birds = [
+                { x: width * 0.3, y: height * 0.15, size: 15 },
+                { x: width * 0.35, y: height * 0.18, size: 12 },
+                { x: width * 0.28, y: height * 0.2, size: 10 },
+            ];
+            
+            for (let bird of birds) {
+                const flapOffset = Math.sin(Date.now() / 200 + bird.x) * 3;
+                ctx.beginPath();
+                ctx.moveTo(bird.x - bird.size, bird.y + flapOffset);
+                ctx.quadraticCurveTo(bird.x - bird.size / 2, bird.y - bird.size / 2 + flapOffset, bird.x, bird.y);
+                ctx.quadraticCurveTo(bird.x + bird.size / 2, bird.y - bird.size / 2 + flapOffset, bird.x + bird.size, bird.y + flapOffset);
+                ctx.stroke();
+            }
+        }
+
+        // Initialize leaves
+        for (let i = 0; i < 50; i++) {
+            leaves.push(new Leaf());
+        }
+
+        // Forest scene
+        function drawForestScene() {
+            ctx.clearRect(0, 0, width, height);
+            drawMountains();
+            drawTrees();
+            for (let leaf of leaves) {
+                leaf.update();
+                leaf.draw();
+            }
+        }
+
+        // Lake scene
+        function drawLakeScene() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Animate sun rising
+            if (sunY > sunTargetY) {
+                sunY += (sunTargetY - sunY) * 0.02;
+            }
+            
+            lakeWaveOffset += 0.02;
+            
+            drawLakeSky();
+            drawSun(width * 0.7, sunY, 60);
+            drawSceneMountains();
+            drawLake();
+            drawBirds();
+        }
+
+        // Animation loop
+        function animate() {
+            if (currentScene === 'forest') {
+                drawForestScene();
+            } else if (currentScene === 'lake') {
+                drawLakeScene();
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animate();
+
+        // Button click handler
+        const enterBtn = document.getElementById('enterBtn');
+        const welcomeContainer = document.getElementById('welcomeContainer');
+        const letterContainer = document.getElementById('letterContainer');
+        const letterClose = document.getElementById('letterClose');
+
+        enterBtn.addEventListener('click', () => {
+            // Hide welcome screen
+            welcomeContainer.classList.add('hidden');
+            
+            // Start zoom animation
+            canvas.classList.add('zooming');
+            
+            // After zoom, switch to lake scene
+            setTimeout(() => {
+                currentScene = 'lake';
+                canvas.classList.remove('zooming');
+                canvas.style.transform = 'none';
+                
+                // Show letter after scene loads
+                setTimeout(() => {
+                    letterContainer.classList.add('visible');
+                }, 1500);
+            }, 2000);
+        });
+
+        // Close letter
+        letterClose.addEventListener('click', () => {
+            letterContainer.classList.remove('visible');
+        });
+
+        // Valentine buttons
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const celebration = document.getElementById('celebration');
+        const letter = document.querySelector('.letter');
+        const puzzleContainer = document.getElementById('puzzleContainer');
+        const puzzleBoard = document.getElementById('puzzleBoard');
+        const piecesTray = document.getElementById('piecesTray');
+
+        // Picture files
+        const pictures = [
+            'pics/0DAAB827-2F06-47F5-BA13-A378829ED4F6_1_105_c.jpeg',
+            'pics/AC0B0602-86F5-4383-B508-2734D5494D90_1_105_c.jpeg',
+            'pics/DC89C031-9BA1-4C55-93B0-ED73A8E098C1_1_105_c.jpeg',
+            'pics/F1186D96-774F-489F-9BC3-0C5F1391483C_1_105_c.jpeg'
+        ];
+
+        let currentPuzzleImage = '';
+        let placedPieces = 0;
+        const totalPieces = 9;
+
+        // Yes button - start puzzle!
+        yesBtn.addEventListener('click', () => {
+            letterContainer.classList.remove('visible');
+            startPuzzle();
+        });
+
+        // No button - runs away from cursor
+        let noBtnRect = noBtn.getBoundingClientRect();
+        let letterRect = letter.getBoundingClientRect();
+        
+        function updateRects() {
+            noBtnRect = noBtn.getBoundingClientRect();
+            letterRect = letter.getBoundingClientRect();
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            updateRects();
+            
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            // Calculate distance from mouse to button center
+            const btnCenterX = noBtnRect.left + noBtnRect.width / 2;
+            const btnCenterY = noBtnRect.top + noBtnRect.height / 2;
+            
+            const distX = mouseX - btnCenterX;
+            const distY = mouseY - btnCenterY;
+            const distance = Math.sqrt(distX * distX + distY * distY);
+            
+            // If mouse is within 100px of the button, run away!
+            const triggerDistance = 100;
+            
+            if (distance < triggerDistance) {
+                // Calculate escape direction (opposite of mouse direction)
+                const escapeX = -distX / distance * 80;
+                const escapeY = -distY / distance * 80;
+                
+                // Get current position
+                const currentLeft = parseFloat(noBtn.style.left) || 0;
+                const currentTop = parseFloat(noBtn.style.top) || 0;
+                
+                // Calculate new position
+                let newLeft = currentLeft + escapeX;
+                let newTop = currentTop + escapeY;
+                
+                // Keep within bounds of the letter (with some padding)
+                const maxLeft = letterRect.width / 2 - 60;
+                const maxTop = 150;
+                const minLeft = -letterRect.width / 2 + 60;
+                const minTop = -100;
+                
+                newLeft = Math.max(minLeft, Math.min(maxLeft, newLeft));
+                newTop = Math.max(minTop, Math.min(maxTop, newTop));
+                
+                // Apply position
+                noBtn.style.left = newLeft + 'px';
+                noBtn.style.top = newTop + 'px';
+            }
+        });
+
+        // Start puzzle game
+        function startPuzzle() {
+            // Select random image
+            currentPuzzleImage = pictures[Math.floor(Math.random() * pictures.length)];
+            placedPieces = 0;
+            
+            // Clear previous puzzle
+            puzzleBoard.innerHTML = '';
+            piecesTray.innerHTML = '';
+            
+            // Create 9 slots on the board
+            for (let i = 0; i < 9; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'puzzle-slot';
+                slot.dataset.index = i;
+                
+                // Drag events for slots
+                slot.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    slot.classList.add('drag-over');
+                });
+                
+                slot.addEventListener('dragleave', () => {
+                    slot.classList.remove('drag-over');
+                });
+                
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    slot.classList.remove('drag-over');
+                    
+                    const pieceIndex = e.dataTransfer.getData('text/plain');
+                    const piece = document.querySelector(`.puzzle-piece[data-index="${pieceIndex}"]`);
+                    
+                    if (piece && !slot.classList.contains('filled')) {
+                        // Check if correct position
+                        if (parseInt(pieceIndex) === parseInt(slot.dataset.index)) {
+                            // Correct placement!
+                            slot.classList.add('filled');
+                            slot.appendChild(piece);
+                            piece.classList.add('placed');
+                            piece.draggable = false;
+                            placedPieces++;
+                            
+                            // Check if puzzle complete
+                            if (placedPieces === totalPieces) {
+                                setTimeout(() => {
+                                    puzzleComplete();
+                                }, 500);
+                            }
+                        } else {
+                            // Wrong position - piece bounces back
+                            piece.style.animation = 'shake 0.3s ease';
+                            setTimeout(() => {
+                                piece.style.animation = '';
+                            }, 300);
+                        }
+                    }
+                });
+                
+                puzzleBoard.appendChild(slot);
+            }
+            
+            // Create shuffled pieces
+            const pieceIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            shuffleArray(pieceIndices);
+            
+            pieceIndices.forEach((originalIndex) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.dataset.index = originalIndex;
+                piece.draggable = true;
+                
+                // Calculate background position for this piece
+                const row = Math.floor(originalIndex / 3);
+                const col = originalIndex % 3;
+                piece.style.backgroundImage = `url('${currentPuzzleImage}')`;
+                piece.style.backgroundPosition = `${-col * 120}px ${-row * 120}px`;
+                
+                // Drag events for pieces
+                piece.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', piece.dataset.index);
+                    piece.classList.add('dragging');
+                });
+                
+                piece.addEventListener('dragend', () => {
+                    piece.classList.remove('dragging');
+                });
+                
+                piecesTray.appendChild(piece);
+            });
+            
+            // Show puzzle
+            setTimeout(() => {
+                puzzleContainer.classList.add('visible');
+            }, 300);
+        }
+        
+        // Shuffle array helper
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // Puzzle complete - celebrate!
+        function puzzleComplete() {
+            puzzleContainer.classList.remove('visible');
+            setTimeout(() => {
+                celebration.classList.add('visible');
+                createConfetti();
+            }, 500);
+        }
+
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#e85a71', '#ff6b8a', '#ffd700', '#ff69b4', '#87ceeb', '#98fb98'];
+            const confettiCount = 150;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    left: ${Math.random() * 100}vw;
+                    top: -20px;
+                    z-index: 101;
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                    pointer-events: none;
+                `;
+                document.body.appendChild(confetti);
+                
+                // Animate falling
+                const duration = Math.random() * 3000 + 2000;
+                const rotation = Math.random() * 720 - 360;
+                const horizontalDrift = Math.random() * 200 - 100;
+                
+                confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(100vh) translateX(${horizontalDrift}px) rotate(${rotation}deg)`, opacity: 0.7 }
+                ], {
+                    duration: duration,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                }).onfinish = () => confetti.remove();
+            }
+        }
+    </script>
+</body>
+</html>
