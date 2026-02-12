@@ -718,22 +718,31 @@
                 ctx.closePath();
                 ctx.fill();
                 
-                // Snow cap
+                // Snow cap - calculate width based on mountain slope
                 if (m.hasSnow) {
                     ctx.fillStyle = m.snowColor;
                     ctx.beginPath();
-                    const snowHeight = m.peakHeight * 0.25;
-                    const snowWidth = m.width * 0.3;
-                    ctx.moveTo(m.x - snowWidth / 2, baseY - m.peakHeight + snowHeight);
-                    ctx.lineTo(m.x, baseY - m.peakHeight);
-                    ctx.lineTo(m.x + snowWidth / 2, baseY - m.peakHeight + snowHeight);
-                    // Jagged snow line
-                    const segments = 5;
+                    
+                    // Snow covers top 25% of mountain height
+                    const snowRatio = 0.25;
+                    // At snowRatio down from peak, the width is snowRatio * full width (due to similar triangles)
+                    const snowLineY = baseY - m.peakHeight + (m.peakHeight * snowRatio);
+                    const snowHalfWidth = (m.width / 2) * snowRatio;
+                    
+                    // Draw snow cap triangle with jagged bottom
+                    ctx.moveTo(m.x, baseY - m.peakHeight); // Peak
+                    ctx.lineTo(m.x + snowHalfWidth, snowLineY); // Right edge
+                    
+                    // Jagged snow line from right to left
+                    const segments = 6;
                     for (let i = segments; i >= 0; i--) {
-                        const px = m.x - snowWidth / 2 + (snowWidth / segments) * i;
-                        const py = baseY - m.peakHeight + snowHeight + Math.sin(i * 2) * 8;
+                        const t = i / segments;
+                        const px = m.x - snowHalfWidth + (snowHalfWidth * 2) * t;
+                        const py = snowLineY + Math.sin(i * 2.5) * 6;
                         ctx.lineTo(px, py);
                     }
+                    
+                    ctx.lineTo(m.x - snowHalfWidth, snowLineY); // Left edge
                     ctx.closePath();
                     ctx.fill();
                 }
@@ -924,10 +933,10 @@
 
         // Picture files
         const pictures = [
-            'pics/0DAAB827-2F06-47F5-BA13-A378829ED4F6_1_105_c.jpeg',
-            'pics/AC0B0602-86F5-4383-B508-2734D5494D90_1_105_c.jpeg',
-            'pics/DC89C031-9BA1-4C55-93B0-ED73A8E098C1_1_105_c.jpeg',
-            'pics/F1186D96-774F-489F-9BC3-0C5F1391483C_1_105_c.jpeg'
+            '0DAAB827-2F06-47F5-BA13-A378829ED4F6_1_105_c.jpeg',
+            'AC0B0602-86F5-4383-B508-2734D5494D90_1_105_c.jpeg',
+            'DC89C031-9BA1-4C55-93B0-ED73A8E098C1_1_105_c.jpeg',
+            'F1186D96-774F-489F-9BC3-0C5F1391483C_1_105_c.jpeg'
         ];
 
         let currentPuzzleImage = '';
@@ -996,8 +1005,11 @@
 
         // Start puzzle game
         function startPuzzle() {
-            // Select random image
-            currentPuzzleImage = pictures[Math.floor(Math.random() * pictures.length)];
+            // Select random image using time-based seed for true randomness
+            const now = Date.now();
+            const seed = now ^ (now >>> 16);
+            const randomIndex = Math.abs(seed) % pictures.length;
+            currentPuzzleImage = pictures[randomIndex];
             placedPieces = 0;
             
             // Clear previous puzzle
